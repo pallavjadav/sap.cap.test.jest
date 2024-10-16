@@ -23,7 +23,6 @@ npm test
 ## Chai Expect Guide
 
 - [Expect](https://www.chaijs.com/guide/styles/#expect)
-- 
 
 ## Important Jest Commands
 
