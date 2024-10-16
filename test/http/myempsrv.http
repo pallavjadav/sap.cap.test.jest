@@ -1,0 +1,41 @@
+@server = http://localhost:4004
+@auth = Authorization: Basic alice:
+
+
+### MyEmp
+# @name MyEmp_GET
+GET {{server}}/odata/v4/myempsrv/MyEmp
+{{auth}}
+
+
+### MyEmp
+# @name MyEmp_POST
+POST {{server}}/odata/v4/myempsrv/MyEmp
+Content-Type: application/json
+{{auth}}
+
+{
+  "ID": "2283121f-00bc-4d50-ade0-7ce25fa5fe4a",
+  "name": "name-2283121",
+  "dob": "2022-06-10"
+}
+
+
+### MyEmp
+# @name MyEmp_PATCH
+PATCH {{server}}/odata/v4/myempsrv/MyEmp/2283121f-00bc-4d50-ade0-7ce25fa5fe4a
+Content-Type: application/json
+{{auth}}
+
+{
+  "ID": "2283121f-00bc-4d50-ade0-7ce25fa5fe4a",
+  "name": "name-2283121",
+  "dob": "2022-06-10"
+}
+
+
+### MyEmp
+# @name MyEmp_DELETE
+DELETE {{server}}/odata/v4/myempsrv/MyEmp/2283121f-00bc-4d50-ade0-7ce25fa5fe4a
+Content-Type: application/json
+{{auth}}
