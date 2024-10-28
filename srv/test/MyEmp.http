@@ -1,0 +1,81 @@
+@server = http://localhost:4004
+@auth = Authorization: Basic alice:
+
+
+### MyEmp
+# @name MyEmp_GET
+GET {{server}}/odata/v4/myempsrv/MyEmp
+{{auth}}
+
+
+### MyEmp
+# @name MyEmp_POST
+POST {{server}}/odata/v4/myempsrv/MyEmp
+Content-Type: application/json
+{{auth}}
+
+{
+  "ID": "25650511-53ed-4e22-bd4a-10450a01a030",
+  "name": "name-25650511",
+  "dob": "2013-01-07",
+  "erpSystem_erpSystem": "erpSystem-25650511"
+}
+
+
+### MyEmp
+# @name MyEmp_PATCH
+PATCH {{server}}/odata/v4/myempsrv/MyEmp/25650511-53ed-4e22-bd4a-10450a01a030
+Content-Type: application/json
+{{auth}}
+
+{
+  "ID": "25650511-53ed-4e22-bd4a-10450a01a030",
+  "name": "name-25650511",
+  "dob": "2013-01-07",
+  "erpSystem": "erpSystem-25650511",
+  "client": "511"
+}
+
+
+### MyEmp
+# @name MyEmp_DELETE
+DELETE {{server}}/odata/v4/myempsrv/MyEmp/25650511-53ed-4e22-bd4a-10450a01a030
+Content-Type: application/json
+{{auth}}
+
+
+### landingMapping
+# @name landingMapping_GET
+GET {{server}}/odata/v4/myempsrv/landingMapping
+{{auth}}
+
+
+### landingMapping
+# @name landingMapping_POST
+POST {{server}}/odata/v4/myempsrv/landingMapping
+Content-Type: application/json
+{{auth}}
+
+{
+  "erpSystem": "landingMapping-19936823",
+  "client": "823"
+}
+
+
+### landingMapping
+# @name landingMapping_PATCH
+PATCH {{server}}/odata/v4/myempsrv/landingMapping/landingMapping-19936823
+Content-Type: application/json
+{{auth}}
+
+{
+  "erpSystem": "landingMapping-19936823",
+  "client": "823"
+}
+
+
+### landingMapping
+# @name landingMapping_DELETE
+DELETE {{server}}/odata/v4/myempsrv/landingMapping/landingMapping-19936823
+Content-Type: application/json
+{{auth}}
