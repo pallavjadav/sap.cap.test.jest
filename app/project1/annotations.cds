@@ -1,5 +1,6 @@
 using myempsrv as service from '../../srv/service';
 annotate service.MyEmp with @(
+    
     UI.FieldGroup #GeneratedGroup : {
         $Type : 'UI.FieldGroupType',
         Data : [
@@ -23,6 +24,9 @@ annotate service.MyEmp with @(
             },
         ],
     },
+    UI.SelectionFields:[
+        name
+    ],
     UI.Facets : [
         {
             $Type : 'UI.ReferenceFacet',
@@ -61,21 +65,17 @@ annotate service.MyEmp with @(
     ],
 );
 
-// annotate service.MyEmp with {
-//     erpSystem @Common.ValueList : {
-//         $Type : 'Common.ValueListType',
-//         CollectionPath : 'landingMapping',
-//         Parameters : [
-//             {
-//                 $Type : 'Common.ValueListParameterInOut',
-//                 LocalDataProperty : erpSystem_erpSystem,
-//                 ValueListProperty : 'erpSystem',
-//             },
-//             {
-//                 $Type : 'Common.ValueListParameterDisplayOnly',
-//                 ValueListProperty : 'client',
-//             },
-//         ],
-//     }
-// };
+annotate service.MyEmp with {
+    name @Common.ValueList : {
+        $Type : 'Common.ValueListType',
+        CollectionPath : 'MyEmp',
+        Parameters : [
+            {
+                $Type : 'Common.ValueListParameterInOut',
+                LocalDataProperty : name,
+                ValueListProperty : 'name',
+            },
+        ],
+    }
+};
 
