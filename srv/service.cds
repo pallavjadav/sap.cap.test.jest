@@ -7,6 +7,11 @@ service myempsrv {
         
     }
     @odata.draft.enabled
-    entity MyEmp as projection on db.MyEmp{*, erpSystem.client as client};
+    entity MyEmp as projection on db.MyEmp{*, erpSystem.client as client}
+    actions{
+      function getUser() returns String;
+    };
     entity landingMapping as projection on db.landingMapping;
+
+  
 }
