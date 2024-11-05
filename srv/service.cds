@@ -6,6 +6,7 @@ service myempsrv {
       Searchable: false
         
     }
+    @odata.draft.enabled
     entity MyEmp as projection on db.MyEmp{*, erpSystem.client as client};
     entity landingMapping as projection on db.landingMapping;
 }
