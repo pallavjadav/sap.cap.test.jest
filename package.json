@@ -26,7 +26,16 @@
   },
   "cds": {
     "requires": {
-      "auth": "mocked"
+      "auth": {
+        "kind":"mocked",
+        "users": {
+            "pallav": {
+              "roles": [
+                "admin"
+              ]
+            }
+          }
+      }
     }
   },
   "sapux": [
