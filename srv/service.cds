@@ -18,9 +18,9 @@ service myempsrv {
   entity landingMapping as projection on db.landingMapping;
 
   @odata.singleton  @cds.persistency.skip
-  entity checkIsAdmin {
+  entity checkAdmin {
     key ID      : String;
-        isAdmin : Boolean;
+        isNotAdmin : Boolean;
   }
 
 }

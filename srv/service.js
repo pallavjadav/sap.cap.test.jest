@@ -5,9 +5,10 @@ module.exports = cds.service.impl(async function () {
         return req.user.id
     })
 
-    this.on('READ', 'checkIsAdmin', async req => {
+    this.on('READ', 'checkAdmin', async req => {
         req.reply({
-            isAdmin: req.user.is('admin') //admin is the role, which for example is also used in @requires annotation
+            ID: req.user.id,
+            isNotAdmin: !req.user.is('admin') //admin is the role, which for example is also used in @requires annotation
         });
     });
 
