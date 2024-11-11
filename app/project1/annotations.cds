@@ -1,10 +1,10 @@
 using myempsrv as service from '../../srv/service';
 
 annotate service.MyEmp with @(
-    UI.CreateHidden              : {$edmJson: {$Path: '/checkAdmin/isNotAdmin'}},
     // UI.UpdateHidden : { $edmJson: {$Not: { $Path: '/Configuration/isAdmin'} } },
     // Reference1: https://cap.cloud.sap/docs/advanced/fiori#use-roles-to-toggle-visibility-of-ui-elements
     // Reference2: https://github.com/SAP-samples/fiori-elements-feature-showcase/blob/main/app/featureShowcase/capabilities.cds
+    UI.CreateHidden              : {$edmJson: {$Path: '/checkAdmin/isNotAdmin'}},
 
     UI.FieldGroup #GeneratedGroup: {
         $Type: 'UI.FieldGroupType',
@@ -26,6 +26,8 @@ annotate service.MyEmp with @(
                 $Type: 'UI.DataField',
                 Label: 'Client',
                 Value: client,
+                // #hide :Hide an element using edmJson 
+                ![@UI.Hidden]: {$edmJson: {$Eq: [{$Path: 'name'}, 'name-21068100' ]}}
             },
         ],
     },
