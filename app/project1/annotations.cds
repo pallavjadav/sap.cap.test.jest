@@ -69,6 +69,8 @@ annotate service.MyEmp with @(
 );
 
 annotate service.MyEmp with {
+    // #SearchTerm: Date Format
+    dob @UI.DateTimeStyle : 'long';
     name @Common.ValueList: {
         $Type         : 'Common.ValueListType',
         CollectionPath: 'MyEmp',
