@@ -1,0 +1,19 @@
+{
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "/odata/(.*)$",
+      "target": "/odata/$1",
+      "authenticationType": "xsuaa",
+      "destination": "sapcapwrkzn-srv-api",
+      "csrfProtection": true
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "authenticationType": "xsuaa",
+      "service": "html5-apps-repo-rt"
+    }
+  ]
+}

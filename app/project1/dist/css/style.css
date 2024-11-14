@@ -1,0 +1,9 @@
+.backgroundColorName {
+    background-color: yellow !important;
+}
+.backgroundColorDob {
+    background-color: red !important;
+}
+[id="project1::MyEmpList--fe::table::MyEmp::LineItem::C::erpSystem_erpSystem-innerColumn"] {
+    background-color: aqua
+}
