@@ -1,0 +1,17 @@
+[
+    {
+        "_version": "3.0",
+        "identification": {
+            "id": "manageEmployeeRole",
+            "entityType": "role",
+            "title": "Manage Employee Role"
+        },
+        "payload": {
+            "apps": [
+                {
+                    "id": "project1"
+                }
+            ]
+        }
+    }
+]

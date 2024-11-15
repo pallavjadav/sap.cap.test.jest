@@ -9,8 +9,14 @@ build-parameters:
   before-all:
     - builder: custom
       commands:
+        # - cp workzone/cdm.json gen/app/cdm.json
         - npm i
         - npx cds build --production
+  after-all:
+    - builder: custom
+      commands:
+        - cp workzone/cdm.json gen/app/cdm.json
+        
 modules:
   - name: sapcapwrkzn-srv
     type: nodejs
@@ -34,6 +40,7 @@ modules:
     type: com.sap.application.content
     path: gen
     requires:
+      - name: sapcapwrkzn-auth
       - name: sapcapwrkzn-html5-repo-host
         parameters:
           content-target: true
@@ -55,6 +62,7 @@ modules:
         - npm i
         - npm run build
         - npm ci
+        # - cp /workzone/cdm.json /gen/app/cdm.json
       supported-platforms:
         []
 
@@ -89,6 +97,34 @@ modules:
               ServiceInstanceName: sapcapwrkzn-auth
               ServiceKeyName: sapcapwrkzn-auth-key
               sap.cloud.service: sapcapwrkzn.service
+
+    # Destination deployer module - create CDM DT destination      
+
+  - name: workzone-exposure-destination-content
+    type: com.sap.application.content
+    requires:
+    - name: workzone-exposure-destination-service
+      parameters:
+        content-target: true
+    - name: sapcapwrkzn_html5_repo_runtime
+      parameters:
+        service-key:
+          name: sapcapwrkzn-html5-repo-runtime-key
+    - name: sapcapwrkzn-auth
+      parameters:
+        service-key:
+          name: sapcapwrkzn-auth-key
+    parameters:
+      content:
+        subaccount:
+            destinations:
+            - Name: wz-webplatformdev-livlab-halloworldcdm-dt
+              ServiceInstanceName: sapcapwrkzn-html5-repo-runtime-service
+              ServiceKeyName: sapcapwrkzn-html5-repo-runtime-key
+              URL: https://html5-apps-repo-rt.${default-domain}/applications/cdm/sapcapwrkzn.service
+            existing_destinations_policy: update
+    build-parameters:
+      no-source: true
 
   - name: sapcapwrkzn-db-deployer
     type: hdb
@@ -133,8 +169,8 @@ resources:
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
+      service-name: sapcapwrkzn-html5-repo-host
       service-plan: app-host
-
   - name: sapcapwrkzn-auth
     type: org.cloudfoundry.managed-service
     parameters:
@@ -149,3 +185,28 @@ resources:
     parameters:
       service: hana
       service-plan: hdi-shared
+  - name: sapcapwrkzn_html5_repo_runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: sapcapwrkzn-html5-repo-runtime-service
+      service-plan: app-runtime
+  - name: workzone-exposure-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          subaccount:
+            destinations:
+            - Authentication: NoAuthentication
+              Name: wz-webplatformdev-livlab-halloworldcdm-rt
+              ProxyType: Internet
+              Type: HTTP
+              CEP.HTML5contentprovider: true
+              URL: https://f9a68c57trial.dt.launchpad.cfapps.us10.hana.ondemand.com
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: workzone-exposure-destination-service
+      service-plan: lite
