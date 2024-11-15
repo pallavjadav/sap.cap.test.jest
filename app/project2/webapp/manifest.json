@@ -43,14 +43,16 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
     "dependencies": {
       "minUI5Version": "1.130.0",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
         "sap.fe.core": {},
-        "sap.fe.macros": {}
+        "sap.fe.macros": {},
+        "sap.fe.templates": {},
+        "sap.f": {}
       }
     },
     "contentDensities": {
@@ -82,12 +84,28 @@
       "css": []
     },
     "routing": {
-      "config": {},
+      "config": {
+        "flexibleColumnLayout": {
+          "defaultTwoColumnLayoutType": "TwoColumnsBeginExpanded",
+          "defaultThreeColumnLayoutType": "ThreeColumnsMidExpanded"
+        },
+        "routerClass": "sap.f.routing.Router"
+      },
       "routes": [
         {
           "name": "MyEmpMain",
           "pattern": ":?query:",
-          "target": "MyEmpMain"
+          "target": [
+            "MyEmpMain"
+          ]
+        },
+        {
+          "name": "MyEmpObjectPage",
+          "pattern": "MyEmp({MyEmpKey}):?query:",
+          "target": [
+            "MyEmpMain",
+            "MyEmpObjectPage"
+          ]
         }
       ],
       "targets": {
@@ -98,11 +116,44 @@
           "options": {
             "settings": {
               "viewName": "project2.ext.main.Main",
-              "contextPath": "/MyEmp"
+              "contextPath": "/MyEmp",
+              "navigation": {
+                "MyEmp": {
+                  "detail": {
+                    "route": "MyEmpObjectPage"
+                  }
+                }
+              }
             }
-          }
+          },
+          "controlAggregation": "beginColumnPages",
+          "contextPattern": ""
+        },
+        "MyEmpObjectPage": {
+          "type": "Component",
+          "id": "MyEmpObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "navigation": {},
+              "contextPath": "/MyEmp",
+              "content": {
+                "header": {
+                  "anchorBarVisible": true
+                }
+              }
+            }
+          },
+          "controlAggregation": "midColumnPages",
+          "contextPattern": "/MyEmp({MyEmpKey})"
         }
       }
+    },
+    "rootView": {
+      "viewName": "sap.fe.templates.RootContainer.view.Fcl",
+      "type": "XML",
+      "async": true,
+      "id": "appRootView"
     }
   },
   "sap.fiori": {}
