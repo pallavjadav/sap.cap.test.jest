@@ -9,12 +9,14 @@ service myempsrv {
   entity MyEmp          as
     projection on db.MyEmp {
       *,
+      status.criticality as criticality,
       erpSystem.client as client
     }
     actions {
-      function getUser() returns String;
+      action Hired();
+      action Inactive();
     };
-
+  
   entity landingMapping as projection on db.landingMapping;
 
   @odata.singleton  @cds.persistency.skip

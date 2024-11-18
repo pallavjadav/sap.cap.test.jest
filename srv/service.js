@@ -1,8 +1,11 @@
 module.exports = cds.service.impl(async function () {
 
-    this.on("getUser","MyEmp", async req =>{
-        console.log('USer >>>>>>>>>>>>>',req.user.id)
-        return req.user.id
+    this.on("Hired","MyEmp", async req =>{
+       await UPDATE(`db.MyEmp`,req.params[0]).with({status_code:'H'})
+    })
+    this.on("Inactive","MyEmp",  async req =>{
+        await UPDATE(`db.MyEmp`,req.params[0]).with({status_code:'X'})
+       
     })
 
     this.on('READ', 'checkAdmin', async req => {
