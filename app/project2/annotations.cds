@@ -5,7 +5,8 @@ annotate service.MyEmp with @(
         ID,
         name,
         dob,
-        erpSystem_erpSystem
+        erpSystem_erpSystem,
+        status_code
     ],
     UI.LineItem #tableMacro           : [
         {
@@ -193,3 +194,33 @@ annotate service.MyEmp with @(UI.Identification: [
         Label : '{i18n>SetInactive}',
     },
 ]);
+annotate service.MyEmp with {
+    status @Common.ValueList : {
+        $Type : 'Common.ValueListType',
+        CollectionPath : 'Statuses',
+        Parameters : [
+            {
+                $Type : 'Common.ValueListParameterInOut',
+                LocalDataProperty : status_code,
+                ValueListProperty : 'code',
+            },
+        ],
+        Label : 'Status',
+    }
+};
+
+annotate service.MyEmp with {
+    erpSystem @(Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'landingMapping',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : erpSystem_erpSystem,
+                    ValueListProperty : 'erpSystem',
+                },
+            ],
+            Label : 'Systems',
+        }
+)};
+

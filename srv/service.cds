@@ -16,7 +16,7 @@ service myempsrv {
       action Hired();
       action Inactive();
     };
-  
+  entity Statuses as projection on db.Statuses;
   entity landingMapping as projection on db.landingMapping;
 
   @odata.singleton  @cds.persistency.skip
