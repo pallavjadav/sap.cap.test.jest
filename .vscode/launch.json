@@ -2,6 +2,17 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Quick Deploy",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "/bin/bash",
+      "args": [
+        "-c",
+        "mbt build --mtar archive && cf deploy mta_archives/archive.mtar"
+      ],
+      "cwd": "${workspaceFolder}"
+    },
+    {
       "name": "cds serve",
       "request": "launch",
       "type": "node",

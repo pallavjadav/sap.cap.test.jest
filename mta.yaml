@@ -12,10 +12,11 @@ build-parameters:
         # - cp workzone/cdm.json gen/app/cdm.json
         - npm i
         - npx cds build --production
-  after-all:
-    - builder: custom
-      commands:
-        - cp workzone/cdm.json gen/app/cdm.json
+        - mkdir -p resources
+        - cp workzone/cdm.json resources/cdm.json
+  # after-all:
+  #   - builder: custom
+  #     commands:
         
 modules:
   - name: sapcapwrkzn-srv
@@ -38,19 +39,26 @@ modules:
 
   - name: sapcapwrkzn-app-deployer
     type: com.sap.application.content
-    path: gen
+    path: .
+    parameters:
+      config:
+        destinations:
+        - forwardAuthToken: true
+          name: sapcapwrkzn-srv-api
+          url: ~{srv-api/srv-url}
     requires:
+      - name: srv-api
       - name: sapcapwrkzn-auth
       - name: sapcapwrkzn-html5-repo-host
         parameters:
           content-target: true
     build-parameters:
-      build-result: app/
+      build-result: resources/
       requires:
         - name: sapcapwrkznproject1
           artifacts:
             - project1.zip
-          target-path: app/
+          target-path: resources/
 
   - name: sapcapwrkznproject1
     type: html5
@@ -69,6 +77,10 @@ modules:
   - name: sapcapwrkzn-destinations
     type: com.sap.application.content
     requires:
+      - name: sapcapwrkzn_html5_repo_runtime
+        parameters:
+          service-key:
+            name: sapcapwrkzn-html5-repo-runtime-key
       - name: sapcapwrkzn-auth
         parameters:
           service-key:
@@ -85,46 +97,49 @@ modules:
       no-source: true
     parameters:
       content:
-        instance:
+        subaccount:
           existing_destinations_policy: update
           destinations:
-            - Name: sapcapwrkzn-html5-repository
-              ServiceInstanceName: sapcapwrkzn-html5-repo-host
-              ServiceKeyName: sapcapwrkzn-html5-repo-host-key
-              sap.cloud.service: sapcapwrkzn.service
-            - Name: sapcapwrkzn-auth
-              Authentication: OAuth2UserTokenExchange
-              ServiceInstanceName: sapcapwrkzn-auth
-              ServiceKeyName: sapcapwrkzn-auth-key
-              sap.cloud.service: sapcapwrkzn.service
-
-    # Destination deployer module - create CDM DT destination      
-
-  - name: workzone-exposure-destination-content
-    type: com.sap.application.content
-    requires:
-    - name: workzone-exposure-destination-service
-      parameters:
-        content-target: true
-    - name: sapcapwrkzn_html5_repo_runtime
-      parameters:
-        service-key:
-          name: sapcapwrkzn-html5-repo-runtime-key
-    - name: sapcapwrkzn-auth
-      parameters:
-        service-key:
-          name: sapcapwrkzn-auth-key
-    parameters:
-      content:
-        subaccount:
-            destinations:
-            - Name: wz-webplatformdev-livlab-halloworldcdm-dt
+            # - Name: sapcapwrkzn-html5-repository
+            #   ServiceInstanceName: sapcapwrkzn-html5-repo-host
+            #   ServiceKeyName: sapcapwrkzn-html5-repo-host-key
+            #   sap.cloud.service: sapcapwrkzn
+            # - Name: sapcapwrkzn-auth
+              # Authentication: OAuth2UserTokenExchange
+              # ServiceInstanceName: sapcapwrkzn-auth
+              # ServiceKeyName: sapcapwrkzn-auth-key
+              # sap.cloud.service: sapcapwrkzn
+            - Name: sapcapwrkzn_cdm
               ServiceInstanceName: sapcapwrkzn-html5-repo-runtime-service
               ServiceKeyName: sapcapwrkzn-html5-repo-runtime-key
-              URL: https://html5-apps-repo-rt.${default-domain}/applications/cdm/sapcapwrkzn.service
-            existing_destinations_policy: update
-    build-parameters:
-      no-source: true
+              URL: https://html5-apps-repo-rt.${default-domain}/applications/cdm/sapcapwrkzn
+    # Destination deployer module - create CDM DT destination      
+
+  # - name: workzone-exposure-destination-content
+  #   type: com.sap.application.content
+  #   requires:
+  #   - name: workzone-exposure-destination-service
+  #     parameters:
+  #       content-target: true
+  #   - name: sapcapwrkzn_html5_repo_runtime
+  #     parameters:
+  #       service-key:
+  #         name: sapcapwrkzn-html5-repo-runtime-key
+  #   - name: sapcapwrkzn-auth
+  #     parameters:
+  #       service-key:
+  #         name: sapcapwrkzn-auth-key
+  #   parameters:
+  #     content:
+  #       subaccount:
+  #           destinations:
+  #           - Name: wz-webplatformdev-livlab-halloworldcdm-dt
+  #             ServiceInstanceName: sapcapwrkzn-html5-repo-runtime-service
+  #             ServiceKeyName: sapcapwrkzn-html5-repo-runtime-key
+  #             URL: https://html5-apps-repo-rt.${default-domain}/applications/cdm/sapcapwrkzn
+  #           existing_destinations_policy: update
+  #   build-parameters:
+  #     no-source: true
 
   - name: sapcapwrkzn-db-deployer
     type: hdb
@@ -141,30 +156,23 @@ resources:
       service: destination
       service-plan: lite
       config:
-        HTML5Runtime_enabled: true
         init_data:
-          instance:
+          subaccount:
             existing_destinations_policy: update
             destinations:
-              - Name: sapcapwrkzn-srv-api
-                URL: ~{srv-api/srv-url}
-                Authentication: NoAuthentication
-                Type: HTTP
+              - Authentication: NoAuthentication
+                Name: wz-webplatformdev-livlab-halloworldcdm-rt
                 ProxyType: Internet
-                HTML5.ForwardAuthToken: true
-                HTML5.DynamicDestination: true
-              - Name: ui5
-                URL: https://ui5.sap.com
-                Authentication: NoAuthentication
                 Type: HTTP
-                ProxyType: Internet
-    requires:
-      - name: srv-api
-        group: destinations
-        properties:
-          name: srv-api # must be used in xs-app.json as well
-          url: ~{srv-url}
-          forwardAuthToken: true
+                URL: https://2c392ddetrial.dt.launchpad.cfapps.us10.hana.ondemand.com
+                CEP.HTML5contentprovider: true
+    # requires:
+    #   - name: srv-api
+    #     group: destinations
+    #     properties:
+    #       name: srv-api # must be used in xs-app.json as well
+    #       url: ~{srv-url}
+    #       forwardAuthToken: true
   - name: sapcapwrkzn-html5-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
@@ -191,22 +199,22 @@ resources:
       service: html5-apps-repo
       service-name: sapcapwrkzn-html5-repo-runtime-service
       service-plan: app-runtime
-  - name: workzone-exposure-destination-service
-    type: org.cloudfoundry.managed-service
-    parameters:
-      config:
-        HTML5Runtime_enabled: true
-        init_data:
-          subaccount:
-            destinations:
-            - Authentication: NoAuthentication
-              Name: wz-webplatformdev-livlab-halloworldcdm-rt
-              ProxyType: Internet
-              Type: HTTP
-              CEP.HTML5contentprovider: true
-              URL: https://f9a68c57trial.dt.launchpad.cfapps.us10.hana.ondemand.com
-            existing_destinations_policy: update
-        version: 1.0.0
-      service: destination
-      service-name: workzone-exposure-destination-service
-      service-plan: lite
+  # - name: workzone-exposure-destination-service
+  #   type: org.cloudfoundry.managed-service
+  #   parameters:
+  #     config:
+  #       # HTML5Runtime_enabled: true
+  #       init_data:
+  #         subaccount:
+  #           destinations:
+  #           - Authentication: NoAuthentication
+  #             Name: wz-webplatformdev-livlab-halloworldcdm-rt
+  #             ProxyType: Internet
+  #             Type: HTTP
+  #             CEP.HTML5contentprovider: true
+  #             URL: https://2c392ddetrial.dt.launchpad.cfapps.us10.hana.ondemand.com
+  #           existing_destinations_policy: update
+  #       version: 1.0.0
+  #     service: destination
+  #     service-name: workzone-exposure-destination-service
+  #     service-plan: lite
