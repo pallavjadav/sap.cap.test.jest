@@ -34,6 +34,15 @@
             "parameters": {},
             "additionalParameters": "allowed"
           }
+        },
+        "Employee-manage": {
+          "semanticObject": "Employee",
+          "action": "manage",
+          "title": "{{flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
         }
       }
     }

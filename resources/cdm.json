@@ -2,6 +2,54 @@
     {
         "_version": "3.0",
         "identification": {
+            "id": "manageEmployeeCatalogId",
+            "title": "{{title}}",
+            "entityType": "catalog"
+        },
+        "payload": {
+            "viz": [
+                {
+                    "appId": "project1",
+                    "vizId": "Employee-manage"
+                }
+            ]
+        },
+        "texts": [
+            {
+                "locale": "",
+                "textDictionary": {
+                    "title": "Manage Employee Catalog"
+                }
+            }
+        ]
+    },
+    {
+        "_version": "3.0",
+        "identification": {
+            "id": "manageEmployeeGroupId",
+            "title": "{{title}}",
+            "entityType": "group"
+        },
+        "payload": {
+            "viz": [
+                {
+                    "appId": "project1",
+                    "vizId": "Employee-manage"
+                }
+            ]
+        },
+        "texts": [
+            {
+                "locale": "",
+                "textDictionary": {
+                    "title": "Manage Employee Group"
+                }
+            }
+        ]
+    },
+    {
+        "_version": "3.0",
+        "identification": {
             "id": "manageEmployeeRole",
             "entityType": "role",
             "title": "Manage Employee Role"
@@ -10,6 +58,16 @@
             "apps": [
                 {
                     "id": "project1"
+                }
+            ],
+            "catalogs": [
+                {
+                    "id": "manageEmployeeCatalogId"
+                }
+            ],
+            "groups": [
+                {
+                    "id": "manageEmployeeGroupId"
                 }
             ]
         }
